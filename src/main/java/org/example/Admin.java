@@ -2,853 +2,995 @@ package org.example;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Panel;
+
+import java.awt.Image;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.time.LocalDate;
-import java.time.Month;
+
 import java.util.ArrayList;
-import java.util.stream.Collector;
+
 import java.util.stream.Collectors;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.w3c.dom.events.MouseEvent;
+
 
 public class Admin  implements ActionListener , MouseListener{
 
 
-    JFrame frame = new JFrame();    
+    JFrame mainFrame = new JFrame();
 
-    // here we gonna put the several btns to make an action 
-    JPanel sidePanel            = new JPanel();
-    JPanel upPanel              = new JPanel();
-    JPanel displayPanel         = new JPanel();
-
-    // side btns
-    JButton livresBtn           = new JButton("livres");
-    JButton usersBtn            = new JButton("users");
-    JButton empruntsBtn         = new JButton("emprunts");
-    JButton retoursBtn          = new JButton("retours");
-    JButton statistiquesBtn     = new JButton("statistiques");
-    JButton logoutBtn           = new JButton("logout");
-
-
-    // upPanel livre btns 
-    JButton edit                    = new JButton("Edit");
-    JButton delete                  = new JButton("Delete");
-    JButton add                     = new JButton("Add");
-    JButton reset                   = new JButton("Reset");
-
-
-
-    // upPanel emprunts btns 
-    JButton search                  = new JButton("search");
-    JButton prolonger               = new JButton("prolonger");
-
-    // emprunts fields and labels 
-    JLabel id                       = new JLabel("id : ");
-    JTextField idField              = new JTextField();
+    // admin image 
+    ImageIcon imageIcon = new ImageIcon("src/main/java/org/example/imgs/admin.png");
+    Image scaledImage = imageIcon.getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT);
+    ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
+    JLabel imageLabel = new JLabel(scaledImageIcon);
     
-    JLabel year                     = new JLabel("year : ");
-    JTextField yearField            = new JTextField();
-    JLabel month                    = new JLabel("month : ");
-    JTextField monthField           = new JTextField();
-    JLabel day                      = new JLabel("day : ");
-    JTextField dayField             = new JTextField();
-
-
-
-    // livre fields and labels 
-    JLabel titre                = new JLabel("titre : ");
-    JTextField titreField       = new JTextField();
-    JLabel auteur               = new JLabel("auteur : ");
-    JTextField auteurField      = new JTextField();
-    JLabel pubdate              = new JLabel("pubdate : ");
-    JTextField pubdateField     = new JTextField();
-    JLabel genre                = new JLabel("genre : ");
-    JTextField genreField       = new JTextField();
-    JLabel quantite             = new JLabel("quantite : ");
-    JTextField quantiteField    = new JTextField();
-    
-
-     // user fields and labels 
-    JLabel name =   new JLabel("nom : ");
-    JTextField nameField = new JTextField();
-    JLabel prenom = new JLabel("prenom : ");
-    JTextField prenomField = new JTextField();
-    JLabel age = new JLabel("age : ");
-    JTextField ageField = new JTextField();
-    JLabel email = new JLabel("email : ");
-    JTextField emailField  = new JTextField();
-
-
-    // resources 
-    ArrayList<User> users       = new ArrayList<>();
-    ArrayList<Livre> livres     = new ArrayList<>();
-    ArrayList<Emprunt> emprunts = new ArrayList<>();
-    ArrayList<Retour> retours   = new ArrayList<>();
-    int tempId                  = 0;
-    String currentPanel         = "";
-    String globaleLivreName     = "";
-
-
-
-    public Admin(ArrayList<Livre> livres,ArrayList<User> users,ArrayList<Emprunt> emprunts,ArrayList<Retour> retours){
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 1000);
-        frame.setVisible(true);
-        frame.setLayout(null);
+    // books image 
+    ImageIcon booksImageIcon = new ImageIcon("src/main/java/org/example/books.png");
+    Image booksscaledImage = booksImageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
+    ImageIcon booksscaledImageIcon = new ImageIcon(booksscaledImage);
+    JLabel booksimageLabel = new JLabel(booksscaledImageIcon);
         
-        delete.setBounds(100, 120, 100, 30);
+    // users image 
+    ImageIcon usersImageIcon = new ImageIcon("src/main/java/org/example/team.png");
+    Image usersscaledImage = usersImageIcon.getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+    ImageIcon usersscaledImageIcon = new ImageIcon(usersscaledImage);
+    JLabel usersimageLabel = new JLabel(usersscaledImageIcon);
+    
+    // loans image 
+    ImageIcon empruntsImageIcon = new ImageIcon("src/main/java/org/example/emprunt.png");
+    Image empruntscaledImage = empruntsImageIcon.getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+    ImageIcon empruntscaledImageIcon = new ImageIcon(empruntscaledImage);
+    JLabel empruntimageLabel = new JLabel(empruntscaledImageIcon);
+
+    // back image 
+    ImageIcon retourImageIcon = new ImageIcon("src/main/java/org/example/retour.png");
+    Image retourscaledImage = retourImageIcon.getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+    ImageIcon retourcaledImageIcon = new ImageIcon(retourscaledImage);
+    JLabel retourimageLabel = new JLabel(retourcaledImageIcon);
+
+     // statistics image 
+    ImageIcon statisImageIcon = new ImageIcon("src/main/java/org/example/analytics.png");
+    Image statiscaledImage = statisImageIcon.getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+    ImageIcon statisscaledImageIcon = new ImageIcon(statiscaledImage);
+    JLabel statisimageLabel = new JLabel(statisscaledImageIcon);
+
+      // lougout image 
+    ImageIcon logoutImageIcon = new ImageIcon("src/main/java/org/example/logout.png");
+    Image logoutcaledImage = logoutImageIcon.getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+    ImageIcon logoutscaledImageIcon = new ImageIcon(logoutcaledImage);
+    JLabel lougoutimageLabel = new JLabel(logoutscaledImageIcon);
+
+    JPanel LeftPanel = new JPanel();
+    JPanel upPanel = new JPanel();
+    JPanel rightPanel = new JPanel();
+
+    JButton booksbutton = new JButton("books");
+    JButton usersButton = new JButton("users");
+    JButton loansButton = new JButton("loans");
+    JButton backButton = new JButton("returns");
+    JButton generalButton = new JButton("generalities");
+    JButton logoutButton = new JButton("logout");
+    JButton edit = new JButton("Edit");
+    JButton delete = new JButton("Delete");
+    JButton add = new JButton("Add");
+    JButton reset = new JButton("Reset");
+    JButton filter = new JButton("Filter");
+    JButton search = new JButton("search");
+    JButton extend = new JButton("extend");
+    JTextField idField = new JTextField();
+    JTextField yearField = new JTextField();
+    JTextField monthField = new JTextField();
+    JTextField dayField = new JTextField();
+    JTextField titleField = new JTextField();
+    JTextField authorField = new JTextField();
+    JTextField pdField = new JTextField();
+    JTextField typeField = new JTextField();
+    JTextField quantityField = new JTextField();
+    JTextField nameField = new JTextField();
+    JTextField secondNameField = new JTextField();
+    JTextField ageField = new JTextField();
+    JTextField emailField  = new JTextField();
+    ArrayList<User> users = new ArrayList<>();
+    ArrayList<Book> books = new ArrayList<>();
+    ArrayList<Loan> loans = new ArrayList<>();
+    ArrayList<Back> backs = new ArrayList<>();
+    int idPrime = 0;
+    String chosenPanel = "";
+    String gbookName = "";
+
+
+
+    public Admin(ArrayList<Book> books,ArrayList<User> users,ArrayList<Loan> loans,ArrayList<Back> backs){
+
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setSize(1000, 1000);
+        mainFrame.setVisible(true);
+        mainFrame.setLayout(null);
+
+        delete.setBounds(60, 120, 100, 30);
         delete.addActionListener(this);
-        edit.setBounds(250, 120, 100, 30);
+        edit.setBounds(320, 120, 100, 30);
         edit.addActionListener(this);
         add.setBounds(400, 120, 100, 30);
         add.addActionListener(this);
         reset.setBounds(550,120,100,30);
         reset.addActionListener(this);
 
-        sidePanel.setBounds(0,0,200,1000);
-        sidePanel.setBackground(Color.LIGHT_GRAY);
-        sidePanel.setLayout(null);
+        LeftPanel.setBounds(0,0,200,1000);
+        LeftPanel.setBackground(Color.white);
+        LeftPanel.setLayout(null);
 
         upPanel.setBounds(200, 0,  800, 200);
-        upPanel.setBackground(Color.DARK_GRAY);
+        upPanel.setBackground(Color.white);
         upPanel.setLayout(null);
 
-        displayPanel.setBounds(200, 200, 800, 800);
-        displayPanel.setBackground(Color.gray);
-        displayPanel.setLayout(null);
+        rightPanel.setBounds(200, 200, 800, 800);
+        rightPanel.setBackground(Color.white);
+        rightPanel.setLayout(null);
 
-        livresBtn.setBounds(10, 100, 130, 40);
-        livresBtn.addActionListener(this);
-        usersBtn.setBounds(10, 200, 130, 40);
-        usersBtn.addActionListener(this);
-        empruntsBtn.setBounds(10, 300, 130, 40);
-        empruntsBtn.addActionListener(this);
-        retoursBtn.setBounds(10, 400, 130, 40);
-        retoursBtn.addActionListener(this);
-        statistiquesBtn.setBounds(10, 500, 130, 40);
-        statistiquesBtn.addActionListener(this);
-        logoutBtn.setBounds(10, 600, 130, 40);
-        logoutBtn.addActionListener(this);
+        booksbutton.setBounds(10, 100, 130, 40);
+        booksbutton.addActionListener(this);
+        usersButton.setBounds(10, 200, 130, 40);
+        usersButton.addActionListener(this);
+        loansButton.setBounds(10, 300, 130, 40);
+        loansButton.addActionListener(this);
+        backButton.setBounds(10, 400, 130, 40);
+        backButton.addActionListener(this);
+        generalButton.setBounds(10, 500, 130, 40);
+        generalButton.addActionListener(this);
+        logoutButton.setBounds(10, 600, 130, 40);
+        logoutButton.addActionListener(this);
 
-        sidePanel.add(livresBtn);
-        sidePanel.add(usersBtn);
-        sidePanel.add(empruntsBtn);
-        sidePanel.add(retoursBtn);
-        sidePanel.add(statistiquesBtn);
-        sidePanel.add(logoutBtn);
+        imageLabel.setBounds(50, 10, 70, 70);
+        booksimageLabel.setBounds(150,105,30,30);
+        usersimageLabel.setBounds(150, 200, 40, 40);
+        empruntimageLabel.setBounds(150, 300, 40, 40);
+        retourimageLabel.setBounds(150, 400, 40, 40);
+        statisimageLabel.setBounds(150, 500, 40, 40);
+        lougoutimageLabel.setBounds(150, 600, 40, 40);
 
-        frame.add(sidePanel);
-        frame.add(upPanel);
-        frame.add(displayPanel);
 
-        this.livres = livres;
-        livres.sort(null);
+        LeftPanel.add(lougoutimageLabel);
+        LeftPanel.add(statisimageLabel);
+        LeftPanel.add(retourimageLabel);
+        LeftPanel.add(empruntimageLabel);
+        LeftPanel.add(usersimageLabel);
+        LeftPanel.add(booksimageLabel);
+        LeftPanel.add(imageLabel);
+        LeftPanel.add(booksbutton);
+        LeftPanel.add(usersButton);
+        LeftPanel.add(loansButton);
+        LeftPanel.add(backButton);
+        LeftPanel.add(generalButton);
+        LeftPanel.add(logoutButton);
+
+        mainFrame.add(LeftPanel);
+        mainFrame.add(upPanel);
+        mainFrame.add(rightPanel);
+
+        this.books = books;
+        books.sort(null);
         this.users  = users;
         users.sort(null);
-        this.emprunts = emprunts;
-        emprunts.sort(null);
-        this.retours = retours;
-        retours.sort(null);
+        this.loans = loans;
+        loans.sort(null);
+        this.backs = backs;
+        backs.sort(null);
+
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == livresBtn){
-            currentPanel = "livres";
+        if (e.getSource() == booksbutton){
+            chosenPanel = "books";
             {
                 upPanel.removeAll();
-                titre.setBounds(10, 10, 50, 30);
-                titreField.setBounds(60, 10, 100, 30);
-                auteur.setBounds(250,10, 60, 30);
-                auteurField.setBounds(320, 10, 100, 30);
-                pubdate.setBounds(500, 10, 70, 30);
-                pubdateField.setBounds(570,10,100,30);
-                genre.setBounds(10,50,60,30);
-                genreField.setBounds(60,50,100,30);
-                quantite.setBounds(250, 50, 70, 30);
-                quantiteField.setBounds(320,50,100,30);
-                reset.setBounds(550,120,100,30);
-                search.setBounds(100,160,100,30);
+                titleField.setBounds(60, 10, 100, 30);
+                authorField.setBounds(320, 10, 100, 30);
+                pdField.setBounds(570,10,100,30);
+                typeField.setBounds(60,50,100,30);
+                quantityField.setBounds(320,50,100,30);
+                reset.setBounds(570,120,100,30);
+                search.setBounds(60,160,100,30);
                 search.addActionListener(this);
+                filter.setBounds(320,160,100,30);
+                filter.addActionListener(this);
+                add.setBounds(570, 160, 100, 30);
 
-                upPanel.add(quantite);
-                upPanel.add(quantiteField);
-                upPanel.add(genre);
-                upPanel.add(genreField);
-                upPanel.add(pubdate);
-                upPanel.add(pubdateField);
-                upPanel.add(titre);
-                upPanel.add(titreField);
-                upPanel.add(auteur);
-                upPanel.add(auteurField);
+                upPanel.add(quantityField);
+                upPanel.add(typeField);
+                upPanel.add(pdField);
+                upPanel.add(titleField);
+                upPanel.add(authorField);
                 upPanel.add(delete);
                 upPanel.add(add);
                 upPanel.add(edit);
                 upPanel.add(reset);
                 upPanel.add(search);
+                upPanel.add(filter);
 
                 upPanel.revalidate();
                 upPanel.repaint();
-                frame.validate();
+                mainFrame.validate();
             }
 
-            // display the livres in the displayPanel 
-            {
-                int i = 0;
-                displayPanel.removeAll();
-                for (Livre livre : livres)
+            {   
+                int x = 10;
+                int y = 10; 
+                rightPanel.removeAll();
+                for (Book livre : books) 
                 {
-                    i+=10;
                     JPanel op = new JPanel();
                     op.addMouseListener(this);
-                    op.setBounds(0, i + 10, 800, 30);
-                    op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                    op.setBackground(Color.DARK_GRAY);
-                    op.add(new JLabel("titre : " + livre.getTitre() + "   auteur : " + livre.getAuteur() + "   pubdate : " + livre.getPubDate() + "   genre : " + livre.getGenre() + "   quantite : " + livre.getQuantite()));
-                    displayPanel.add(op);
-                    displayPanel.revalidate();
-                    displayPanel.repaint();
-                    frame.validate();
-                    i+= 40;
+                    op.setBounds(x, y, 150, 150);
+                    op.setBackground(Color.white);
+                    op.add(new JLabel("title : " + livre.getTitle()));
+                    op.add(new JLabel("   author : " + livre.getAuthor()));
+                    op.add(new JLabel("   PD : " + livre.getPd()));
+                    op.add(new JLabel("   type : " + livre.getType() ));
+                    op.add(new JLabel("   quantity : " + livre.getQuantity()));
+                    rightPanel.add(op);
+                    x += 160; 
+                    if (x > (10 + 3 * 160)) {
+                        x = 10; 
+                        y += 170; 
+                    }
                 }
+                rightPanel.revalidate();
+                rightPanel.repaint();
+                mainFrame.validate();
             }
-
+            
         };
-        if (e.getSource() == usersBtn)
+        if (e.getSource() == usersButton)
         {
-
-                currentPanel = "users";
-                {
+            chosenPanel = "users";
+            {
                 upPanel.removeAll();
-                name.setBounds(10, 10, 50, 30);
                 nameField.setBounds(60, 10, 100, 30);
-                prenom.setBounds(250,10, 60, 30);
-                prenomField.setBounds(320, 10, 100, 30);
-                age.setBounds(10,50,60,30);
+                secondNameField.setBounds(320, 10, 100, 30);
                 ageField.setBounds(60,50,100,30);
-                email.setBounds(250, 50, 70, 30);
                 emailField.setBounds(320,50,150,30);
-                reset.setBounds(400,120,100,30);
-                upPanel.add(name);
+                reset.setBounds(570,120,100,30);
                 upPanel.add(nameField);
-                upPanel.add(prenom);
-                upPanel.add(prenomField);
-                upPanel.add(age);
+                upPanel.add(secondNameField);
                 upPanel.add(ageField);
-                upPanel.add(email);
                 upPanel.add(emailField);
                 upPanel.add(delete);
                 upPanel.add(reset);
                 upPanel.add(edit);
                 upPanel.revalidate();
                 upPanel.repaint();
-                frame.validate();
+                mainFrame.validate();
             }
-                
-                
-                // clean the displayPanel and display the users 
-                {   
-                    displayPanel.removeAll();
-                    int  i  = 0;
-                    for (User user : users)
-                    {
-                       if (!user.getNom().equals("admin")){
-                         i += 10;
+            {
+               int x = 10;
+                int y = 10; 
+                rightPanel.removeAll();
+                for (User user : users) 
+                {
+                   if (!user.getNom().equals("admin"))
+                   {
                         JPanel op = new JPanel();
-                        // op.setLayout(null);
                         op.addMouseListener(this);
-                        op.setBounds(0, 10 + i, 800, 30);
-                        op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                        op.setBackground(Color.DARK_GRAY);
-                        op.add(new JLabel("name : " + user.getNom() + "   premom : " + user.getPrenom() + "   age : " + user.getAge() + "   email : " + user.getEmail()));
-                        displayPanel.add(op);
-                        displayPanel.revalidate();
-                        displayPanel.repaint();
-                        frame.validate();
-                        i += 40;
-                       }
-                    } 
-                    frame.validate();
-                }   
+                        op.setBounds(x, y, 190, 160);
+                        op.setBackground(Color.white);
+                        op.add(new JLabel("name : " + user.getNom()));
+                        op.add(new JLabel("   secName : " + user.getPrenom()));
+                        op.add(new JLabel("   age   : " + user.getAge()));
+                        op.add(new JLabel("   email : " + user.getEmail()));
+                        rightPanel.add(op);
+                        x += 190; 
+                        if (x > (10 + 3 * 190)) {
+                            x = 10; 
+                            y += 170; 
+                        }
+                   }
+                }
+                rightPanel.revalidate();
+                rightPanel.repaint();
+                mainFrame.validate();
+            }
         };
-        if (e.getSource() == empruntsBtn)
-        {       
-            currentPanel = "emprunts";
+        if (e.getSource() == loansButton)
+        {
+            chosenPanel = "loans";
             {
                 upPanel.removeAll();
-                id.setBounds(100, 20, 30, 30);
                 idField.setBounds(140, 20, 100, 30);
                 search.setBounds(250, 20, 100, 30);
                 search.addActionListener(this);
-                day.setBounds(100, 70, 50, 30);
                 dayField.setBounds(140, 70, 100, 30);
-                month.setBounds(250, 70, 70, 30);
                 monthField.setBounds(310, 70, 100, 30);
-                year.setBounds(420,70,70,30);
                 yearField.setBounds(460,70,100,30);
-                prolonger.setBounds(560,70,100,30);
-                prolonger.addActionListener(this);
-                upPanel.add(prolonger);
-                upPanel.add(day);
+                extend.setBounds(560,70,100,30);
+                extend.addActionListener(this);
+                upPanel.add(extend);
                 upPanel.add(dayField);
-                upPanel.add(month);
                 upPanel.add(monthField);
-                upPanel.add(year);
                 upPanel.add(yearField);
-                upPanel.add(id);
                 upPanel.add(idField);
                 upPanel.add(search);
                 upPanel.revalidate();
                 upPanel.repaint();
-                frame.validate();
+                mainFrame.validate();
             }
-
-              // display the emprunts in the displayPanel 
             {
-                int i = 0;
-                displayPanel.removeAll();
-                for (Emprunt emprunt: emprunts)
+                int x = 10;
+                int y = 10; 
+                rightPanel.removeAll();
+                for (Loan emprunt : loans) 
                 {
-                    i+=10;
-                    JPanel op = new JPanel();
-                    op.addMouseListener(this);
-                    op.setBounds(0, i + 10, 800, 30);
-                    op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                    op.setBackground(Color.DARK_GRAY);
-                    op.add(new JLabel("user id: " + emprunt.getId() + "   titre name : " + emprunt.getLivrename() + "   dateEmprunt : " +emprunt.getDateEmprunt() + "  dateRetour : " + emprunt.getDateRetour()));
-                    displayPanel.add(op);
-                    displayPanel.revalidate();
-                    displayPanel.repaint();
-                    frame.validate();
-                    i+= 40;
+                        JPanel op = new JPanel();
+                        op.addMouseListener(this);
+                        op.setBounds(x, y, 170, 160);
+                        op.setBackground(Color.white);
+                        op.add(new JLabel("user id: " + emprunt.getId()));
+                        op.add(new JLabel("   book name : " + emprunt.getTitleName()));
+                        op.add(new JLabel("   LD : " +emprunt.getLD()));
+                        op.add(new JLabel("  BD : " + emprunt.getBD()));
+                        rightPanel.add(op);
+                        rightPanel.revalidate();
+                        rightPanel.repaint();
+                        mainFrame.validate();
+                        x += 180; 
+                        if (x > (10 + 3 * 180)) {
+                            x = 10; 
+                            y += 180; 
+                        }
                 }
             }
-
-
-        
         };
-        if (e.getSource() == retoursBtn){
+        if (e.getSource() == backButton){
 
             upPanel.removeAll();
             upPanel.revalidate();
             upPanel.repaint();
-
-            // display the retours 
-            {
-                int i = 0;
-                displayPanel.removeAll();
-                for (Retour retour : retours)
+                
+                int x = 10;
+                int y = 10; 
+                rightPanel.removeAll();
+            for (Back retour : backs) 
                 {
-                    i+=10;
                     JPanel op = new JPanel();
                     op.addMouseListener(this);
-                    op.setBounds(0, i + 10, 800, 30);
-                    op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                    op.setBackground(Color.DARK_GRAY);
-                    op.add(new JLabel("user id: "  + retour.getEmprunt().getId() + "   livre : " + retour.getEmprunt().getLivrename() + "   date retour : " + retour.getDateRetour()  + "  date de retour prevue : " + retour.getEmprunt().getDateRetour() + "  "));
-                    displayPanel.add(op);
-                    displayPanel.revalidate();
-                    displayPanel.repaint();
-                    frame.validate();
-                    i+= 40;
+                    op.setBounds(x, y, 190, 160);
+                    op.setBackground(Color.white);
+                    op.add(new JLabel("user id: "  + retour.getEmprunt().getId()));
+                    op.add(new JLabel("   book : " + retour.getEmprunt().getTitleName()));
+                    op.add(new JLabel("   BD : " + retour.getDateRetour()));
+                    op.add(new JLabel(" EBD : " + retour.getEmprunt().getBD()));
+
+                    if (retour.getDateRetour().isAfter(retour.getEmprunt().getBD()))
+                    {
+                        ImageIcon warnning = new ImageIcon("src/main/java/org/example/warning.png");
+                        Image warningscaledImage = warnning.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+                        ImageIcon warningscaledImageIcon = new ImageIcon(warningscaledImage);
+                        JLabel warningimageLabel = new JLabel(warningscaledImageIcon);
+                        op.add(warningimageLabel);
+                        for (User u : users)
+                            if (u.getId() == retour.getEmprunt().getId())
+                                    u.setBaned(true); 
+                    }
+                        rightPanel.add(op);
+                        rightPanel.revalidate();
+                        rightPanel.repaint();
+                        mainFrame.validate();
+                        x += 190; 
+                        if (x > (10 + 3 * 190)) {
+                            x = 10; 
+                            y += 190; 
+                        }
                 }
-            }
-
-
         };
+        if (e.getSource() == filter){
 
-        if (e.getSource() == statistiquesBtn)
-        {
+            rightPanel.removeAll();
+            rightPanel.revalidate();
+            rightPanel.repaint();
+            {
+                int x = 10;
+                int y = 10; 
+                rightPanel.removeAll();
             
+                for (Book livre : books) {
+                    JPanel op = new JPanel();
+                    op.addMouseListener(this);
+                    op.setBounds(x, y, 150, 150);
+                    op.setBackground(Color.white);       
+                    op.add(new JLabel("title : " + livre.getTitle()));
+                    op.add(new JLabel("   author : " + livre.getAuthor()));
+                    op.add(new JLabel("   PD : " + livre.getPd()));
+                    op.add(new JLabel("   type : " + livre.getType()));
+                    op.add(new JLabel("   quantity : " + livre.getQuantity()));
+                    rightPanel.add(op);
+                    {
+                        JPanel dispo = new JPanel();
+                        dispo.setSize(50,50);
+                        dispo.setBackground(((livre.getQuantity() == 0)? Color.RED : Color.GREEN));
+                        op.add(dispo);
+                    }
+                    x += 160; 
+                    if (x > (10 + 3 * 160)) {
+                        x = 10; 
+                        y += 170; 
+                    }
+                }
+                rightPanel.revalidate();
+                rightPanel.repaint();
+                mainFrame.validate();
+            }
+
+
+
+        }
+        if (e.getSource() == generalButton)
+        {
+
             upPanel.removeAll();
             upPanel.revalidate();
             upPanel.repaint();
-            displayPanel.removeAll();
-            displayPanel.revalidate();
-            displayPanel.repaint();
+            rightPanel.removeAll();
+            rightPanel.revalidate();
+            rightPanel.repaint();
 
-           
+            ArrayList<Book> mostWantedLivres = (ArrayList<Book>)books.stream().filter(lv -> lv.getQuantity() < 10).collect(Collectors.toList());
+            JPanel o = new JPanel();
+            o.setBounds(100, 0, 200, 30);
+            o.add(new JLabel("the most wanted books "));
+
+
+            ImageIcon like = new ImageIcon("src/main/java/org/example/like.png");
+            Image likeImg = like.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            ImageIcon likeImgscaled = new ImageIcon(likeImg);
+            JLabel likelabel = new JLabel(likeImgscaled);
+            o.add(likelabel);
+
+
+            rightPanel.add(o);
+
             int i = 11;
 
-            {    // display livres from one to five to make it look like the most emrpunted
-                int j = 0;
-                for (Livre livre : livres)
+            {
+                for (Book livre : mostWantedLivres)
                 {
-                    if(j < 5)
-                    {
-                             i+=10;
+                    i+=10;
                     JPanel op = new JPanel();
                     op.addMouseListener(this);
-                    op.setBounds(0, i + 10, 800, 30);
+                    op.setBounds(100, 10 + i, 100, 30);
                     op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                    op.setBackground(Color.DARK_GRAY);
-                    op.add(new JLabel("titre : " + livre.getTitre() + "   auteur : " + livre.getAuteur() + "   pubdate : " + livre.getPubDate() + "   genre : " + livre.getGenre() + "   quantite : " + livre.getQuantite()));
-                    displayPanel.add(op);
-                    displayPanel.revalidate();
-                    displayPanel.repaint();
-                    frame.validate();
+                    op.setBackground(Color.white);
+                    op.add(new JLabel("title : " + livre.getTitle()));
+                    rightPanel.add(op);
+                    rightPanel.revalidate();
+                    rightPanel.repaint();
+                    mainFrame.validate();
                     i+= 40;
-                    j++;
-                    }
-               
                 }
             }
 
+            JPanel oo = new JPanel();
+            oo.setBounds(100, i + 10, 200, 30);
+            oo.add(new JLabel("the most active users  "));
 
-             // just chose a random users (the active users)
+
+            ImageIcon active = new ImageIcon("src/main/java/org/example/king.png");
+            Image activeImg = active.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT);
+            ImageIcon activeScaledImg = new ImageIcon(activeImg);
+            JLabel activeLable = new JLabel(activeScaledImg);
+            oo.add(activeLable);
+
+            rightPanel.add(oo);
             {   
-                i+=10;
-                int k = 0;
+                ArrayList<Integer> ids = (ArrayList<Integer>) loans.stream().map(em -> em.getId()).collect(Collectors.toList());
+                ArrayList<Integer> duplicated = (ArrayList<Integer>) ids.stream().filter(el -> (ids.indexOf(el) != ids.lastIndexOf(el)) ).collect(Collectors.toList());
+                
+                i+=20;
                 for (User user : users)
-                {   
-                    if ( !user.getNom().equals("admin") && k < 3)
+                {
+                    if (duplicated.contains(user.getId()) && !user.getNom().equals("admin"))
                     {
                         i += 10;
                         JPanel op = new JPanel();
-                        // op.setLayout(null);
                         op.addMouseListener(this);
-                        op.setBounds(0, 10 + i, 800, 30);
+                        op.setBounds(100, 10 + i, 200, 30);
                         op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                        op.setBackground(Color.DARK_GRAY);
-                        op.add(new JLabel("name : " + user.getNom() + "   premom : " + user.getPrenom() + "   age : " + user.getAge() + "   email : " + user.getEmail()));
-                        displayPanel.add(op);
-                        displayPanel.revalidate();
-                        displayPanel.repaint();
-                        frame.validate();
+                        op.setBackground(Color.white);
+                        op.add(new JLabel("   email : " + user.getEmail()));
+                        rightPanel.add(op);
+                        rightPanel.revalidate();
+                        rightPanel.repaint();
+                        mainFrame.validate();
                         i += 40;
-                        k++;
                     }
                 }
             }
 
-        }
 
-        if (e.getSource() == logoutBtn){
-            new Login(users);
-            frame.dispose();
+
+        }
+        if (e.getSource() == logoutButton)
+        {
+            new Login(books, users, loans, backs);
+            mainFrame.dispose();
         };
         if (e.getSource() == delete)
-        {
-         if (currentPanel.equals("livres"))  
-            if (!titreField.getText().equals("")){
-                livres = (ArrayList<Livre>)livres.stream().filter(livre -> !livre.getTitre().equals(titreField.getText())).collect(Collectors.toList());
-                livres.sort(null);
-                displayPanel.removeAll();
-                 {
-                int i = 0;
-                for (Livre livre : livres)
-                {
-                    i+=30;
-                    JPanel op = new JPanel();
-                    op.addMouseListener(this);
-                    op.setBounds(100, i, 600, 25);
-                    op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                    op.setBackground(Color.DARK_GRAY);
-                    op.add(new JLabel("titre : " + livre.getTitre() + "   auteur : " + livre.getAuteur() + "   pubdate : " + livre.getPubDate() + "   genre : " + livre.getGenre() + "   quantite : " + livre.getQuantite()));
-                    displayPanel.add(op);
-                    displayPanel.revalidate();
-                    displayPanel.repaint();
-                    frame.validate();
+        {   
+            if (chosenPanel.equals("books"))
+                if (!titleField.getText().equals("")){
+                    books = (ArrayList<Book>)books.stream().filter(livre -> !livre.getTitle().equals(titleField.getText())).collect(Collectors.toList());
+                    books.sort(null);
+                    rightPanel.removeAll();
+                    {
+                        int x = 10;
+                        int y = 10; 
+                        rightPanel.removeAll();
+                        for (Book livre : books) {
+                        JPanel op = new JPanel();
+                        op.addMouseListener(this);
+                        op.setBounds(x, y, 150, 150);
+                        op.setBackground(Color.white);       
+                        op.add(new JLabel("title : " + livre.getTitle()));
+                        op.add(new JLabel("   author : " + livre.getAuthor()));
+                        op.add(new JLabel("   PD : " + livre.getPd()));
+                        op.add(new JLabel("   type : " + livre.getType()));
+                        op.add(new JLabel("   quantity : " + livre.getQuantity()));
+                        rightPanel.add(op);
+                        x += 160; 
+                    if (x > (10 + 3 * 160)) {
+                        x = 10;
+                        y += 170;
+                    }
                 }
-                if (livres.size() == 0)
-                {
-                    displayPanel.removeAll();
-                    displayPanel.revalidate();
-                    displayPanel.repaint();
-                    frame.validate();
+            
+                    rightPanel.revalidate();
+                    rightPanel.repaint();
+                    mainFrame.validate();
+                        if (books.size() == 0)
+                        {
+                            rightPanel.removeAll();
+                            rightPanel.revalidate();
+                            rightPanel.repaint();
+                            mainFrame.validate();
+                        }
+
+                    }
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Please enter a title before proceeding.", "Empty Title", JOptionPane.WARNING_MESSAGE);
+
                 }
 
-            }
-            }
-            else {System.out.println("empty");}
-        
-            if (currentPanel.equals("users")){
-               
-                if (!emailField.equals("")){
+            if (chosenPanel.equals("users")){
+
+                if (!emailField.getText().equals("")){
                     users = (ArrayList<User>)users.stream().filter(u -> !u.getEmail().equals(emailField.getText())).collect(Collectors.toList());
                     users.sort(null);
 
-                    {   
-                        displayPanel.removeAll();
-                        int  i  = 0;
-                        for (User user : users)
+                    {
+                        int x = 10;
+                        int y = 10; 
+                        rightPanel.removeAll();
+                        for (User user : users) 
                         {
-                            if (!user.getNom().equals("admin")){
-                            i += 10;
-                            JPanel op = new JPanel();
-                            // op.setLayout(null);
-                            op.addMouseListener(this);
-                            op.setBounds(0, 10 + i, 800, 30);
-                            op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                            op.setBackground(Color.DARK_GRAY);
-                            op.add(new JLabel("name : " + user.getNom() + "   premom : " + user.getPrenom() + "   age : " + user.getAge() + "   email : " + user.getEmail()));
-                            displayPanel.add(op);
-                            displayPanel.revalidate();
-                            displayPanel.repaint();
-                            frame.validate();
-                            i += 40;
-                        } 
-                        frame.validate(); 
-                        if (users.size() == 1)
-                        {   
-                            displayPanel.removeAll();
-                            displayPanel.revalidate();
-                            displayPanel.repaint();
-                            frame.validate();
+                            if (!user.getNom().equals("admin"))
+                            {
+                                JPanel op = new JPanel();
+                                op.addMouseListener(this);
+                                op.setBounds(x, y, 160, 160);
+                                op.setBackground(Color.white);
+                                op.add(new JLabel("name : " + user.getNom()));
+                                op.add(new JLabel("   sName : " + user.getPrenom()));
+                                op.add(new JLabel("   age : " + user.getAge()));
+                                op.add(new JLabel("   email : " + user.getEmail()));
+                                rightPanel.add(op);
+                                x += 170; 
+                                if (x > (10 + 3 * 170)) {
+                                    x = 10; 
+                                    y += 170; 
+                            }
+                         
+                        if (users.size() == 0)
+                        {
+                            rightPanel.removeAll();
+                            rightPanel.revalidate();
+                            rightPanel.repaint();
+                            mainFrame.validate();
                         }
                     }
-                  
-
-                }   
-                   
 
                 }
+                rightPanel.revalidate();
+                rightPanel.repaint();
+                mainFrame.validate();
+                    }
+                    
+               
+                }
                 else
-                    System.out.println("insert user email");
+                {
+                     JOptionPane.showMessageDialog(null, "Please enter an email before proceeding.", "Empty email", JOptionPane.WARNING_MESSAGE);
+                };
             }
             e.setSource(reset);
         };
         if (e.getSource() == add)
         {
-           if (currentPanel.equals("livres"))
-             if (!titreField.getText().equals("") && !auteurField.getText().equals("") && !pubdateField.getText().equals("") && !genreField.getText().equals("") && !quantiteField.getText().equals(""))
-            {
-                Livre Livre = new Livre(livres.get(livres.size() - 1).getId() + 1, titreField.getText(), auteurField.getText(), pubdateField.getText(), genreField.getText(),Integer.parseInt(quantiteField.getText()));
-                livres.add(Livre);
-                int i = 0;
-                displayPanel.removeAll();
-                for (Livre livre : livres)
-                    {
-                        i+=30;
+            if (chosenPanel.equals("books"))
+                if (!titleField.getText().equals("") && !authorField.getText().equals("") && !pdField.getText().equals("") && !typeField.getText().equals("") && !quantityField.getText().equals(""))
+                {
+                    Book Livre = new Book(books.get(books.size() - 1).getId() + 1, titleField.getText(), authorField.getText(), pdField.getText(), typeField.getText(),Integer.parseInt(quantityField.getText()));
+                    books.add(Livre);
+                    
+                        int x = 10;
+                        int y = 10;
+                        rightPanel.removeAll();
+            
+                    for (Book livre : books) {
                         JPanel op = new JPanel();
-                        op.addMouseListener(this);
-                        op.setBounds(100, i, 600, 25);
-                        op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                        op.setBackground(Color.DARK_GRAY);
-                        op.add(new JLabel("titre : " + livre.getTitre() + "   auteur : " + livre.getAuteur() + "   pubdate : " + livre.getPubDate() + "   genre : " + livre.getGenre() + "   quantite : " + livre.getQuantite()));
-                        op.addMouseListener(this);
-                        displayPanel.add(op);
-                        displayPanel.revalidate();
-                        displayPanel.repaint();
-                        frame.validate();
+                    op.addMouseListener(this);
+                    op.setBounds(x, y, 150, 150);
+                    op.setBackground(Color.white);       
+                    op.add(new JLabel("title : " + livre.getTitle()));
+                    op.add(new JLabel("   author : " + livre.getAuthor()));
+                    op.add(new JLabel("   PD : " + livre.getPd()));
+                    op.add(new JLabel("   type : " + livre.getType()));
+                    op.add(new JLabel("   quantity : " + livre.getQuantity()));
+                    rightPanel.add(op);
+                    x += 160; 
+                    if (x > (10 + 3 * 160)) {
+                        x = 10; 
+                        y += 170;
                     }
-            }
-            else {
-                System.out.println("one of the fields is empty");
-            };
+                }
+                    rightPanel.revalidate();
+                    rightPanel.repaint();
+                    mainFrame.validate();
+                }
+                else {
+                    System.out.println("one of the fields is empty");
+                };
             e.setSource(reset);
         };
         if (e.getSource() == edit)
         {
-            if (currentPanel.equals("livres"))
+            if (chosenPanel.equals("books"))
             {
-                Livre newlivre = new Livre(tempId, titreField.getText(), auteurField.getText(), pubdateField.getText(), genreField.getText(),Integer.parseInt(quantiteField.getText()));
-                livres = (ArrayList<Livre>)livres.stream().filter(livre -> livre.getId() != tempId).collect(Collectors.toList());
-                livres.add(newlivre);
-                livres.sort(null);
-                int i = 0;
-                displayPanel.removeAll();
-                for (Livre livre : livres)
+                if (!titleField.getText().equals(""))
                 {
-                    i+=30;
+                    Book newlivre = new Book(idPrime, titleField.getText(), authorField.getText(), pdField.getText(), typeField.getText(),Integer.parseInt(quantityField.getText()));
+                books = (ArrayList<Book>)books.stream().filter(livre -> livre.getId() != idPrime).collect(Collectors.toList());
+                books.add(newlivre);
+                books.sort(null);
+                
+                int x = 10;
+                int y = 10;
+                rightPanel.removeAll();
+            
+                for (Book livre : books) {
                     JPanel op = new JPanel();
                     op.addMouseListener(this);
-                    op.setBounds(100, i, 600, 25);
-                    op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                    op.setBackground(Color.DARK_GRAY);
-                    op.add(new JLabel("titre : " + livre.getTitre() + "   auteur : " + livre.getAuteur() + "   pubdate : " + livre.getPubDate() + "   genre : " + livre.getGenre() + "   quantite : " + livre.getQuantite()));
-                    displayPanel.add(op);
-                    displayPanel.revalidate();
-                    displayPanel.repaint();
-                    frame.validate();
-                    tempId = 0;
+                    op.setBounds(x, y, 150, 150);
+                    op.setBackground(Color.white);       
+                    op.add(new JLabel("title : " + livre.getTitle()));
+                    op.add(new JLabel("   author : " + livre.getAuthor()));
+                    op.add(new JLabel("   PD : " + livre.getPd()));
+                    op.add(new JLabel("   type : " + livre.getType()));
+                    op.add(new JLabel("   quantity : " + livre.getQuantity()));
+                    rightPanel.add(op);
+                    x += 160;
+                    if (x > (10 + 3 * 160)) {
+                        x = 10;
+                        y += 170;
+                    }
+                }
+                rightPanel.revalidate();
+                rightPanel.repaint();
+                mainFrame.validate();
+                }else 
+                {
+                     JOptionPane.showMessageDialog(null, "Please enter a title before proceeding.", "Empty Title", JOptionPane.WARNING_MESSAGE);
                 }
 
             }
-            if (currentPanel.equals("users")){
-                // i need to check if the user is banned or not 
-                User newUser = new User(tempId, nameField.getText(), prenomField.getText(), Integer.parseInt(ageField.getText()), emailField.getText(),false);
-                users = (ArrayList<User>)users.stream().filter(user -> user.getId() != tempId).collect(Collectors.toList());
+            if (chosenPanel.equals("users")){
+                
+                User newUser = new User(idPrime, nameField.getText(), secondNameField.getText(), Integer.parseInt(ageField.getText()), emailField.getText(),false);
+                users = (ArrayList<User>)users.stream().filter(user -> user.getId() != idPrime).collect(Collectors.toList());
                 users.add(newUser);
                 users.sort(null);
-                int i = 0;
-                displayPanel.removeAll();
-                for (User user : users)
+                {
+               int x = 10;
+                int y = 10; 
+                rightPanel.removeAll();
+                for (User user : users) 
                 {
                    if (!user.getNom().equals("admin"))
                    {
-                    i += 10;
-                    JPanel op = new JPanel();
-                    op.addMouseListener(this);
-                    op.setBounds(0, 10 + i, 800, 30);
-                    op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                    op.setBackground(Color.DARK_GRAY);
-                    op.add(new JLabel("name : " + user.getNom() + "   premom : " + user.getPrenom() + "   age : " + user.getAge() + "   email : " + user.getEmail()));
-                    displayPanel.add(op);
-                    displayPanel.revalidate();
-                    displayPanel.repaint();
-                    i += 40;
+                        JPanel op = new JPanel();
+                        op.addMouseListener(this);
+                        op.setBounds(x, y, 160, 160);
+                        op.setBackground(Color.white);
+                        op.add(new JLabel("name : " + user.getNom()));
+                        op.add(new JLabel("   sName : " + user.getPrenom()));
+                        op.add(new JLabel("   age : " + user.getAge()));
+                        op.add(new JLabel("   email : " + user.getEmail()));
+                        rightPanel.add(op);
+                        x += 170; 
+                        if (x > (10 + 3 * 170)) {
+                            x = 10; 
+                            y += 170; 
+                        }
+                   }
                 }
-                frame.validate();
+                rightPanel.revalidate();
+                rightPanel.repaint();
+                mainFrame.validate();
             }
-            tempId = 0;
+                idPrime = 0;
             }
             e.setSource(reset);
         };
         if (e.getSource() == reset)
         {
-            if (currentPanel.equals("livres")){
+            if (chosenPanel.equals("books")){
 
-                titreField.setText("");
-                auteurField.setText("");
-                pubdateField.setText("");
-                genreField.setText("");
-                quantiteField.setText("");
+                titleField.setText("");
+                authorField.setText("");
+                pdField.setText("");
+                typeField.setText("");
+                quantityField.setText("");
                 upPanel.revalidate();
                 upPanel.repaint();;
-                frame.validate();
-                
+                mainFrame.validate();
+
             }
-            else if (currentPanel.equals("users")){
-                
+            else if (chosenPanel.equals("users")){
+
                 nameField.setText("");
-                prenomField.setText("");
+                secondNameField.setText("");
                 ageField.setText("");
                 emailField.setText("");
                 upPanel.revalidate();
                 upPanel.repaint();
-                frame.validate();
+                mainFrame.validate();
 
             }
         }
         if (e.getSource() == search)
         {
-
-            if(currentPanel.equals("livres"))
+            if(chosenPanel.equals("books"))
             {
-
-
-                ArrayList<Livre> searchedLivres = (ArrayList<Livre>)livres.stream().filter(lv -> 
-                      (lv.getAuteur().equals(auteurField.getText()) || lv.getGenre().equals(genreField.getText()) || lv.getPubDate().equals(pubdateField.getText()))
+                ArrayList<Book> searchedLivres = (ArrayList<Book>)books.stream().filter(lv ->
+                        (lv.getTitle().equals(authorField.getText()) || lv.getType().equals(typeField.getText()) || lv.getPd().equals(pdField.getText()))
                 ).collect(Collectors.toList());
-                System.out.println(searchedLivres);
                 {
-                int i = 0;
-                displayPanel.removeAll();
-                for (Livre livre : searchedLivres)
-                {
-                    i+=10;
+                          int x = 10;
+                    int y = 10;
+                    rightPanel.removeAll();
+            
+                    for (Book livre : searchedLivres) {
                     JPanel op = new JPanel();
                     op.addMouseListener(this);
-                    op.setBounds(0, i + 10, 800, 30);
-                    op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                    op.setBackground(Color.DARK_GRAY);
-                    op.add(new JLabel("titre : " + livre.getTitre() + "   auteur : " + livre.getAuteur() + "   pubdate : " + livre.getPubDate() + "   genre : " + livre.getGenre() + "   quantite : " + livre.getQuantite()));
-                    displayPanel.add(op);
-                    displayPanel.revalidate();
-                    displayPanel.repaint();
-                    frame.validate();
-                    i+= 40;
+                    op.setBounds(x, y, 150, 150);
+                    op.setBackground(Color.white);       
+                    op.add(new JLabel("title : " + livre.getTitle()));
+                    op.add(new JLabel("   author : " + livre.getAuthor()));
+                    op.add(new JLabel("   PD : " + livre.getPd()));
+                    op.add(new JLabel("   type : " + livre.getType() ));
+                    op.add(new JLabel("   quantity : " + livre.getQuantity()));
+                    rightPanel.add(op);
+                    x += 160;
+                    if (x > (10 + 3 * 160)) {
+                        x = 10;
+                        y += 170;
+                    }
                 }
-            }
+                rightPanel.revalidate();
+                rightPanel.repaint();
+                mainFrame.validate();
+                }
 
 
             }
             else if (!idField.getText().equals("")){
 
-                if (currentPanel.equals("emprunts"))
+                if (chosenPanel.equals("loans"))
                 {
-                    tempId = Integer.parseInt(idField.getText());
-                    var newEmprunts = (ArrayList<Emprunt>)emprunts.
-                    stream().filter(emprunt -> emprunt.getId() == tempId).
-                    collect(Collectors.toList());
+                    idPrime = Integer.parseInt(idField.getText());
+                    var newEmprunts = (ArrayList<Loan>)loans.
+                            stream().filter(emprunt -> emprunt.getId() == idPrime).
+                            collect(Collectors.toList());
                     newEmprunts.sort(null);
+            
+                    int x = 10;
+                    int y = 10; 
+                    rightPanel.removeAll();
+                    for (Loan emprunt : newEmprunts) 
+                    {
+                        JPanel op = new JPanel();
+                        op.addMouseListener(this);
+                        op.setBounds(x, y, 170, 160);
+                        op.setBackground(Color.white);
+                        op.add(new JLabel("user id: " + emprunt.getId()));
+                        op.add(new JLabel("   book name : " + emprunt.getTitleName()));
+                        op.add(new JLabel("   LD : " +emprunt.getLD()));
+                        op.add(new JLabel("  BD : " + emprunt.getBD()));
+
+                        rightPanel.add(op);
+                        rightPanel.revalidate();
+                        rightPanel.repaint();
+                        mainFrame.validate();
+                        x += 180; 
+                        if (x > (10 + 3 * 180)) {
+                            x = 10; 
+                            y += 180; 
+                        }
+                    }
+                    idPrime = 0;
+                }
+            }else {
+                {
                     {
                         int i = 0;
-                        displayPanel.removeAll();
-                        for (Emprunt emprunt: newEmprunts)
+                        rightPanel.removeAll();
+                        for (Loan emprunt: loans)
                         {
                             i+=10;
                             JPanel op = new JPanel();
                             op.addMouseListener(this);
-                            op.setBounds(0, i + 10, 800, 30);
+                            op.setBounds(100, 10 + i, 600, 30);
                             op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                            op.setBackground(Color.DARK_GRAY);
-                            op.add(new JLabel("user id: " + emprunt.getId() + "   titre name : " + emprunt.getLivrename() + "   dateEmprunt : " +emprunt.getDateEmprunt() + "  dateRetour : " + emprunt.getDateRetour()));
-                            displayPanel.add(op);
-                            displayPanel.revalidate();
-                            displayPanel.repaint();
-                            frame.validate();
+                            op.setBackground(Color.gray);
+                            op.add(new JLabel("user id: " + emprunt.getId() + "   book name : " + emprunt.getTitleName() + "   LD : " +emprunt.getLD() + "  BD : " + emprunt.getBD()));
+                            rightPanel.add(op);
+                            rightPanel.revalidate();
+                            rightPanel.repaint();
+                            mainFrame.validate();
                             i+= 40;
                         }
                     }
-                    tempId = 0;
                 }
-            
-            }else {
-             {
-                   {
-                int i = 0;
-                displayPanel.removeAll();
-                for (Emprunt emprunt: emprunts)
-                {
-                    i+=10;
-                    JPanel op = new JPanel();
-                    op.addMouseListener(this);
-                    op.setBounds(0, i + 10, 800, 30);
-                    op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                    op.setBackground(Color.DARK_GRAY);
-                    op.add(new JLabel("user id: " + emprunt.getId() + "   titre name : " + emprunt.getLivrename() + "   dateEmprunt : " +emprunt.getDateEmprunt() + "  dateRetour : " + emprunt.getDateRetour()));
-                    displayPanel.add(op);
-                    displayPanel.revalidate();
-                    displayPanel.repaint();
-                    frame.validate();
-                    i+= 40;
-                }
-            }
-             }   
-             tempId = 0;
+                idPrime = 0;
             }
         }
-
-        if (e.getSource() == prolonger)
+        if (e.getSource() == extend)
         {
 
             int j = 0;
             int id = Integer.parseInt(idField.getText());
-            for (Emprunt em : emprunts){
-                if (em.getId() == id && em.getLivrename().equals(globaleLivreName))
+            for (Loan em : loans){
+                if (em.getId() == id && em.getTitleName().equals(gbookName))
                 {
-                    Emprunt ne = new Emprunt(globaleLivreName,em.getId(),em.getDateEmprunt(), LocalDate.of(Integer.parseInt(yearField.getText()), Integer.parseInt(monthField.getText()), Integer.parseInt(dayField.getText())));
-                    emprunts.remove(j);
-                    emprunts.add(ne);
-                    emprunts.sort(null);
-                    globaleLivreName = "";
+                    Loan ne = new Loan(gbookName,em.getId(),em.getLD(), LocalDate.of(Integer.parseInt(yearField.getText()), Integer.parseInt(monthField.getText()), Integer.parseInt(dayField.getText())));
+                    loans.remove(j);
+                    loans.add(ne);
+                    loans.sort(null);
+                    gbookName = "";
                     break;
                 }
                 j++;
             }
 
-            // display 
-            displayPanel.removeAll();
-             {
-                int i = 0;
-                displayPanel.removeAll();
-                for (Emprunt emprunt: emprunts)
+                int x = 10;
+                int y = 10; 
+                rightPanel.removeAll();
+                for (Loan emprunt : loans) 
                 {
-                    i+=10;
-                    JPanel op = new JPanel();
-                    op.addMouseListener(this);
-                    op.setBounds(0, i + 10, 800, 30);
-                    op.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 3));
-                    op.setBackground(Color.DARK_GRAY);
-                    op.add(new JLabel("user id: " + emprunt.getId() + "   titre name : " + emprunt.getLivrename() + "   dateEmprunt : " +emprunt.getDateEmprunt() + "  dateRetour : " + emprunt.getDateRetour()));
-                    displayPanel.add(op);
-                    displayPanel.revalidate();
-                    displayPanel.repaint();
-                    frame.validate();
-                    i+= 40;
+                        JPanel op = new JPanel();
+                        op.addMouseListener(this);
+                        op.setBounds(x, y, 170, 160);
+                        op.setBackground(Color.white);
+                        op.add(new JLabel("user id: " + emprunt.getId()));
+                        op.add(new JLabel("   book name : " + emprunt.getTitleName()));
+                        op.add(new JLabel("   LD : " +emprunt.getLD()));
+                        op.add(new JLabel("  BD : " + emprunt.getBD()));
+                        rightPanel.add(op);
+                        rightPanel.revalidate();
+                        rightPanel.repaint();
+                        mainFrame.validate();
+                        x += 180; 
+                        if (x > (10 + 3 * 180)) {
+                            x = 10; 
+                            y += 180; 
+                        }
                 }
-            }
-            {  
+            {
                 idField.setText("");
                 monthField.setText("");
                 dayField.setText("");
                 yearField.setText("");
                 upPanel.revalidate();
                 upPanel.repaint();
-                frame.validate();
+                mainFrame.validate();
             }
         }
     }
-
 
     @Override
     public void mouseClicked(java.awt.event.MouseEvent e) {
 
         if (e.getSource() instanceof JPanel) {
             JPanel clickedPanel = (JPanel) e.getSource();
-            
+
             if (clickedPanel.getComponentCount() > 0 && clickedPanel.getComponent(0) instanceof JLabel ) {
-                    if (currentPanel.equals("livres"))
+                if (chosenPanel.equals("books"))
+                {
+                    JLabel titleLabel = (JLabel) clickedPanel.getComponent(0);
+                    String name = titleLabel.getText().split(" ")[2];
+                    Book book  = null;
+                    for (Book lv : books)
+                        if (lv.getTitle().equals(name))
+                            book = lv;
                     {
-                        JLabel titleLabel = (JLabel) clickedPanel.getComponent(0);
-                        String name = titleLabel.getText().split(" ")[2];
+                        titleField.setText(book.getTitle());
+                        authorField.setText(book.getAuthor());
+                        pdField.setText(book.getPd());
+                        typeField.setText(book.getType());
+                        quantityField.setText(Integer.toString(book.getQuantity()));
+                        idPrime = book.getId();
+                        upPanel.revalidate();
+                        upPanel.repaint();
+                        mainFrame.validate();
+                    }
+                }
+                else if (chosenPanel.equals("users")){
+                    JLabel titleLabel = (JLabel) clickedPanel.getComponent(0);
+                    String name = titleLabel.getText().split(" ")[2];
+                    User user = null;
+                    for (User u : users)
+                        if (u.getNom().equals(name))
+                            user = u;
+                    {
+                        nameField.setText(user.getNom());
+                        secondNameField.setText(user.getPrenom());
+                        ageField.setText(Integer.toString(user.getAge()));
+                        emailField.setText(user.getEmail());
+                        idPrime = user.getId();
+                        upPanel.revalidate();
+                        upPanel.repaint();
+                        mainFrame.validate();
+                    }
+                }
+                else if (chosenPanel.equals("loans")){
+                    JLabel p1 = (JLabel) clickedPanel.getComponent(0);                    
+                    JLabel p2 = (JLabel) clickedPanel.getComponent(1);
+                    int userId = Integer.parseInt(p1.getText().split(" ")[2]);
+                    String bookName = p2.getText().split(" ")[6];
 
-                        Livre livre  = null;
-                        for (Livre lv : livres)
-                        if (lv.getTitre().equals(name))
-                            livre = lv;
+                    Loan emprunt = null;
+
+                    for (Loan em : loans){
+                        if (em.getId() == userId && em.getTitleName().equals(bookName))
                         {
-                            titreField.setText(livre.getTitre());
-                            auteurField.setText(livre.getAuteur());
-                            pubdateField.setText(livre.getPubDate());
-                            genreField.setText(livre.getGenre());
-                            quantiteField.setText(Integer.toString(livre.getQuantite()));
-                            tempId = livre.getId();
-                            upPanel.revalidate();
-                            upPanel.repaint();
-                            frame.validate();
+                            emprunt = em;
+                            break;
                         }
                     }
-                    else if (currentPanel.equals("users")){
-                        JLabel titleLabel = (JLabel) clickedPanel.getComponent(0);
-                        String name = titleLabel.getText().split(" ")[2];
-                        User user = null;
-                        for (User u : users)
-                            if (u.getNom().equals(name))
-                                    user = u;
-                        {
-                            nameField.setText(user.getNom());
-                            prenomField.setText(user.getPrenom());
-                            ageField.setText(Integer.toString(user.getAge()));
-                            emailField.setText(user.getEmail());
-                            tempId = user.getId();
-                            upPanel.revalidate();
-                            upPanel.repaint();
-                            frame.validate();
-                        }
+                    {
+                        gbookName = emprunt.getTitleName();
+                        idField.setText(Integer.toString(emprunt.getId()));
+                        dayField.setText(Integer.toString(emprunt.getBD().getDayOfMonth()));
+                        monthField.setText(Integer.toString(emprunt.getBD().getMonthValue()));
+                        yearField.setText(Integer.toString(emprunt.getBD().getYear()));
+                        upPanel.revalidate();
+                        upPanel.repaint();
+                        mainFrame.validate();
                     }
-                    else if (currentPanel.equals("emprunts")){
 
-                        // just remind thhat the condition is about the book name cause every user can emprunt just one book at once 
-                        JLabel titleLabel = (JLabel) clickedPanel.getComponent(0);
-                        String livreName = titleLabel.getText().split(" ")[8];
-                        int id = Integer.parseInt(titleLabel.getText().split(" ")[2]);
-
-                        Emprunt emprunt = null;
-
-                        for (Emprunt em : emprunts){
-                            if (em.getId() == id && em.getLivrename().equals(livreName))
-                            {
-                                emprunt = em;
-                                break;
-                            }
-                        }
-
-                        {
-                            globaleLivreName = emprunt.getLivrename();
-                            idField.setText(Integer.toString(emprunt.getId()));
-                            dayField.setText(Integer.toString(emprunt.getDateRetour().getDayOfMonth()));
-                            monthField.setText(Integer.toString(emprunt.getDateRetour().getMonthValue()));
-                            yearField.setText(Integer.toString(emprunt.getDateRetour().getYear()));
-                            upPanel.revalidate();
-                            upPanel.repaint();
-                            frame.validate();
-                        }
-
-                    }
+                }
             }
 
         }

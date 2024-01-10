@@ -1,24 +1,22 @@
 package org.example;
 
 import java.time.LocalDate;
-import java.time.temporal.Temporal;
-import java.util.Objects;
 
-public class Retour implements Comparable<Retour>{
+public class Back implements Comparable<Back>{
 
-    private Emprunt emprunt;
+    private Loan emprunt;
     private LocalDate dateRetour;
     
-    public Retour(Emprunt emprunt, LocalDate dateRetour) {
+    public Back(Loan emprunt, LocalDate dateRetour) {
         this.emprunt = emprunt;
         this.dateRetour = dateRetour;
     }
 
-    public Emprunt getEmprunt() {
+    public Loan getEmprunt() {
         return emprunt;
     }
 
-    public void setEmprunt(Emprunt emprunt) {
+    public void setEmprunt(Loan emprunt) {
         this.emprunt = emprunt;
     }
 
@@ -47,7 +45,7 @@ public class Retour implements Comparable<Retour>{
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Retour other = (Retour) obj;
+        Back other = (Back) obj;
         if (emprunt == null) {
             if (other.emprunt != null)
                 return false;
@@ -67,7 +65,7 @@ public class Retour implements Comparable<Retour>{
     }
 
     @Override
-    public int compareTo(Retour o){
+    public int compareTo(Back o){
         return Integer.compare(emprunt.getId(), o.getEmprunt().getId());
     }
    

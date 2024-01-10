@@ -9,7 +9,7 @@ public class User implements Comparable<User>{
     private int age;
     private String email;
     private String password;
-    private  boolean Baned;
+    private  boolean baned;
 
     public User(int id,String nom,String prenom,int age,String email,String password,boolean baned){
         this.id = id;
@@ -18,7 +18,7 @@ public class User implements Comparable<User>{
         this.age = age;
         this.email = email;
         this.password = password;
-        this.Baned = false;
+        this.baned = baned;
     }
 
        public User(int id,String nom,String prenom,int age,String email,boolean baned){
@@ -27,7 +27,7 @@ public class User implements Comparable<User>{
         this.prenom = prenom;
         this.age = age;
         this.email = email;
-        this.Baned = false;
+        this.baned = baned;
     }
 
 
@@ -78,13 +78,13 @@ public class User implements Comparable<User>{
     public void setPassword(String password) {
         this.password = password;
     }
-
+    
     public boolean isBaned() {
-        return Baned;
+        return baned;
     }
 
     public void setBaned(boolean baned) {
-        Baned = baned;
+        this.baned = baned;
     }
 
     @Override
@@ -92,12 +92,12 @@ public class User implements Comparable<User>{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && age == user.age && Baned == user.Baned && Objects.equals(nom, user.nom) && Objects.equals(prenom, user.prenom) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        return id == user.id && age == user.age && baned == user.baned && Objects.equals(nom, user.nom) && Objects.equals(prenom, user.prenom) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nom, prenom, age, email, password, Baned);
+        return Objects.hash(id, nom, prenom, age, email, password, baned);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class User implements Comparable<User>{
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", Baned=" + Baned +
+                ", Baned=" + baned +
                 '}';
     }
 
